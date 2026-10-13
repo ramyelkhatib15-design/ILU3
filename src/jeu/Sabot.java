@@ -15,21 +15,21 @@ public class Sabot implements Iterable<Carte> {
 		this.cartes = cartes;
 		this.nbCartes = cartes.length;
 	}
-	
+
 	public int getNbCartes() {
 		return nbCartes;
 	}
-	
+
 	public Carte[] getCartes() {
 		return cartes;
 	}
-	
+
 	public boolean estVide() {
-		return nbCartes==0 ;
+		return nbCartes == 0;
 	}
-	
+
 	public void ajouterCarte(Carte carte) {
-		if (nbCartes>=cartes.length) {
+		if (nbCartes >= cartes.length) {
 			throw new IndexOutOfBoundsException("Capacité maximale du sabot atteinte !");
 		}
 		cartes[nbCartes] = carte;
@@ -40,15 +40,15 @@ public class Sabot implements Iterable<Carte> {
 	public Iterator<Carte> iterator() {
 		return new Iterateur();
 	}
-	
+
 	private class Iterateur implements Iterator<Carte> {
 		private int indiceIterateur = 0;
 		private boolean nextEffectue = false;
 		private int nombreOperationsReference = nombreOperations;
-		
+
 		@Override
 		public boolean hasNext() {
-			return indiceIterateur<nbCartes;
+			return indiceIterateur < nbCartes;
 		}
 
 		@Override
@@ -67,33 +67,33 @@ public class Sabot implements Iterable<Carte> {
 		@Override
 		public void remove() {
 			verificationConcurrence();
-			if(!nextEffectue || nbCartes < 1) {
+			if (!nextEffectue || nbCartes < 1) {
 				throw new IllegalStateException();
 			}
-			
+
 			for (int i = indiceIterateur - 1; i < nbCartes - 1; i++) {
-				cartes[i] = cartes[i+1];
+				cartes[i] = cartes[i + 1];
 			}
-			
+
 			nextEffectue = false;
 			indiceIterateur--;
 			nbCartes--;
 			nombreOperationsReference++;
 			nombreOperations++;
 		}
-		
+
 		private void verificationConcurrence() {
-			if(nombreOperations!=nombreOperationsReference) {
+			if (nombreOperations != nombreOperationsReference) {
 				throw new ConcurrentModificationException();
 			}
 		}
-		
+
 	}
-	
+
 	public Carte piocher() {
-	    Iterator<Carte> it = iterator();
-	    Carte carte = it.next(); 
-	    it.remove();           
-	    return carte;
+		Iterator<Carte> it = iterator();
+		Carte carte = it.next();
+		it.remove();
+		return carte;
 	}
 }

@@ -1,7 +1,7 @@
 package cartes;
 
 public class Borne extends Carte {
-	private int km;
+	private Integer km;
 
 	public Borne(int km) {
 		this.km = km;
@@ -10,5 +10,13 @@ public class Borne extends Carte {
 	@Override
 	public String toString() {
 		return km + " km";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Borne borne) {
+			return this.km.equals(borne.km);
+		}
+		return false;
 	}
 }
